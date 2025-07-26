@@ -41,7 +41,7 @@
         </div>
         <div class="footer-right">
           <img
-            src="@/assets/images/6265332e63b917130ca8d702_isa-logo-dog-clean.svg"
+            src="@/assets/images/62647f9fbe07235ba9b28d67_star-white-with-animals.svg"
             alt="Footer Illustration"
             class="footer-illustration"
           />

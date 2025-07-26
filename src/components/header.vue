@@ -3,11 +3,14 @@
     <div class="header-container">
       <div class="hero-content">
         <div class="logo-section">
-          <img
-            src="../assets/images/6265332e63b917130ca8d702_isa-logo-dog-clean.svg"
-            alt="ISA Logo"
-            class="logo"
-          />
+          <transition name="slide-down" mode="out-in">
+            <img
+              :src="logoList[currentLogo]"
+              alt="ISA Logo"
+              class="logo"
+              :key="currentLogo"
+            />
+          </transition>
         </div>
         <div class="brand-section">
           <div class="brand-text">
@@ -66,6 +69,16 @@ import { gsap } from "gsap";
 
 export default {
   name: "AppHeader",
+  data() {
+    return {
+      logoList: [
+        require("../assets/images/6265332e63b917130ca8d702_isa-logo-dog-clean.svg"),
+        require("../assets/images/627fc81139e6f5dca2d02054_isa-logo-cat-clean.svg"),
+      ],
+      currentLogo: 0,
+      intervalId: null,
+    };
+  },
   mounted() {
     gsap.from(".hero-content", {
       y: 50,
@@ -81,11 +94,33 @@ export default {
       ease: "power2.out",
       delay: 0.5,
     });
+
+    this.intervalId = setInterval(() => {
+      this.nextLogo();
+    }, 2500);
+  },
+  beforeUnmount() {
+    clearInterval(this.intervalId);
+  },
+  methods: {
+    nextLogo() {
+      this.currentLogo = (this.currentLogo + 1) % this.logoList.length;
+    },
   },
 };
 </script>
 
 <style scoped>
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: all 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+}
+.slide-down-enter,
+.slide-down-leave-to {
+  opacity: 0;
+  transform: translateY(-80px);
+}
+
 .header {
   width: 100%;
   min-height: 100vh;
@@ -121,11 +156,16 @@ export default {
 
 .logo-section {
   flex-shrink: 0;
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 .logo {
-  width: 120px;
-  height: 120px;
+  width: 240px;
+  height: 240px;
   filter: brightness(0);
 }
 
@@ -162,10 +202,11 @@ export default {
 
 .subtitle-section {
   text-align: center;
+  margin-bottom: 0;
 }
 
 .subtitle {
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   color: #000000;
   margin: 0;
   font-weight: 500;
@@ -174,6 +215,7 @@ export default {
 }
 
 .social-media {
+  margin-top: 0;
   display: flex;
   gap: 1rem;
   align-items: center;
@@ -184,8 +226,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 0px;
   background: transparent;
   border-radius: 50%;
   transition: all 0.3s ease;
@@ -196,8 +238,8 @@ export default {
 }
 
 .social-icon img {
-  width: 36px;
-  height: 36px;
+  width: 46px;
+  height: 46px;
   filter: brightness(0);
 }
 
